@@ -1,0 +1,7 @@
+-r turnip/rspec
+-r spec_helper
+--format documentation
+--order random
+--color
+--fail-fast
+
