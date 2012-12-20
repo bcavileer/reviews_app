@@ -1,23 +1,9 @@
 step "I start a review" do
-  creator = ReviewsApp::ReviewCreator.new
-  creator.ui = @listener
-  creator.validator = ReviewsApp::ReviewValidator.new
-  creator.normalizer = ReviewsApp::ReviewNormalizer.new
-  creator.gateway = @gateway
-  creator.start_review(@request_params)
+  ReviewsApp::ReviewStarter.new(ui: @listener, gateway: @gateway).start_review(@request_params)
 end
 
 step ":type review parameters" do |type|
-  case type
-  when "ADP"
-      @request_params = :adp
-    when "Autobase"
-      @request_params = :autobase
-    when "invalid"
-      @request_params = :invalid
-    when "existing"
-      @request_params = :existing
-  end
+  @request_params = (type + '_review').downcase.to_sym
 end
 
 step "I should receive :message" do |message|
