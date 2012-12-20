@@ -3,11 +3,11 @@ step "I start a review" do
 end
 
 step ":type review parameters" do |type|
-  @request_params = (type + '_review').downcase.to_sym
+  @request_params = (type.downcase + '_review').to_sym
 end
 
 step "I should receive :message" do |message|
-  @listener = double("UI")
+  @listener = double "UI"
   @listener.should_receive(message.to_sym)
-  @gateway = double("Gateway", :exists? => (message == 'existing_review'))
+  @gateway = double "Gateway", :exists? => (message == 'existing_review')
 end
