@@ -1,11 +1,12 @@
 require "spec_helper"
-
+require "pry"
 module ReviewsApp
   describe ReviewStarter do
     let(:ui_mock) { double("UI") }
-    let(:gateway_stub) { double("Gateway", :exists? => false) }
+    let(:gateway_stub) { double("Gateway", :exists? => false).as_null_object }
     let(:validator_stub) { double("Validator", :valid? => true) }
-    let(:normalizer_stub) { double("Normalizer", :normalize => nil) }
+    let(:normalizer_stub) { double("Normalizer", :normalize => review) }
+    let(:review) { double("Review").as_null_object}
     let(:subject) do
       ReviewStarter.new ui: ui_mock,
                         gateway: gateway_stub,
@@ -16,7 +17,7 @@ module ReviewsApp
     context "with valid review data" do
       it "responds to the UI with start_review" do
         ui_mock.should_receive(:start_review)
-        subject.start_review({})
+        subject.start_review(review)
       end
     end
 
@@ -24,7 +25,7 @@ module ReviewsApp
       it "responds to the UI with invalid_review" do
         ui_mock.should_receive(:invalid_review)
         validator_stub.stub(:valid? => false)
-        subject.start_review({})
+        subject.start_review(review)
       end
     end
 
@@ -32,7 +33,7 @@ module ReviewsApp
       it "responds to the UI with existing_review" do
         ui_mock.should_receive(:existing_review)
         gateway_stub.stub(:exists? => true)
-        subject.start_review({})
+        subject.start_review(review)
       end
     end
   end
