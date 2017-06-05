@@ -11,12 +11,12 @@ module ReviewsApp
       }
 
       it "review is adp or autobase" do
-        subject.valid?(review).should be_true
+        subject.valid?(review).should be_truthy
       end
 
       it "review is unknown" do
         review.stub :advisor_name => nil
-        subject.valid?(review).should be_false
+        subject.valid?(review).should be_falsey
       end
     end
   end
